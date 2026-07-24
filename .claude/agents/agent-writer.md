@@ -29,11 +29,15 @@ Con toda la información acumulada del flujo (tipo de proyecto, resumen del audi
 - **Si es proyecto nuevo (greenfield):**
   - Crea la carpeta hermana con el nombre del proyecto (derivado del nombre que el usuario le dio al proyecto).
   - Ejemplo: si el usuario invocó `/new-project mi-api`, crea `../mi-api/`.
-- **Si es proyecto existente (brownfield):**
+- **Si es proyecto existente (brownfield externo):**
   - Trabaja dentro de la carpeta ya existente (no la recrees).
+- **Si es proyecto ya generado por genesis, agregando capa faltante (brownfield interno / ampliación):**
+  - Trabaja dentro de la carpeta ya existente.
+  - **Antes de escribir**, lee la carpeta `.claude/agents/` existente para conocer qué agentes ya están presentes y evitar cualquier colisión.
 
 ### 2. Escribir los agentes especializados
 
+- **Si es modo ampliación de capa**: antes de escribir nada, lee todos los `.md` de `.claude/agents/` existentes para conocer sus `name:` y evitar colisiones. Solo genera los agentes de la **nueva capa**.
 - Usa `core/agent-template.md` como base para cada agente que decidas que el proyecto necesite.
 - Inyecta en cada agente:
   - Lenguaje y framework real (sin placeholders sin resolver).
@@ -67,12 +71,15 @@ Con toda la información acumulada del flujo (tipo de proyecto, resumen del audi
 
 ### 6. Documentar el setup en el README del proyecto
 
-- Asegúrate de que el proyecto generado tenga un `README.md` que incluya:
+- Si el README ya existe (modo ampliación de capa), actualízalo para reflejar la nueva capa agregada y el stack completo actualizado.
+- Asegúrate de que el README incluya:
   - Nombre y propósito del proyecto.
-  - Stack principal.
+  - Stack principal y capas cubiertas.
   - Cómo invocar los agentes especializados (comandos, si aplica).
-- Si es **brownfield**, añade explícitamente:
+- Si es **brownfield externo**, añade explícitamente:
   > **Primer paso pendiente:** generar un baseline spec mediante `explore`/`sync` antes de cualquier feature nueva.
+- Si es **ampliación de capa**, añade explícitamente:
+  > **Capa agregada:** [nombre de la capa] — los agentes especializados de esta capa ya están disponibles junto a los existentes.
 
 ### 7. Terminar
 
@@ -84,6 +91,8 @@ Con toda la información acumulada del flujo (tipo de proyecto, resumen del audi
 - **No dejes placeholders sin resolver** en los agentes especializados.
 - **No generes código de negocio** (ej. modelos, controladores, servicios) — solo el scaffold de agentes, comandos y documentación.
 - **No ejecutes tests ni scripts del proyecto** — eso le corresponde a los agentes especializados ya en la capa proyecto.
+- **En modo ampliación de capa: no modifiques, dupliques ni sobrescribas** los agentes especializados ya presentes en `.claude/agents/`. Solo agrega los de la nueva capa.
+- **En modo ampliación de capa: verifica colisiones de nombre** antes de escribir cualquier agente nuevo.
 - Si no tienes toda la información necesaria para un paso, pide aclaración al orchestrator antes de continuar.
 
 ## Formato de salida obligatorio
