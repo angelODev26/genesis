@@ -47,11 +47,42 @@ Esto dispara el flujo completo coordinado por los agentes de esta capa meta.
 
 ---
 
+## Modelo de orquestación en la capa proyecto
+
+Los proyectos generados **no incluyen un agente orquestador**. La orquestación es una propiedad del sistema, no un agente más:
+
+- **La sesión principal** (Claude Code / OpenCode) orquesta el trabajo: lee la petición del usuario y delega al subagente adecuado. Su mecanismo de despacho son las `description:` de los agentes — por eso deben ser diferenciadas y precisas (ver `core/agent-template.md`).
+- **OpenSpec** orquesta el proceso de desarrollo (ciclo propose → apply → archive).
+- Los agentes especializados **no se invocan entre sí** salvo necesidad explícita; cada uno declara su alcance para evitar solapamientos.
+
+Esta ausencia es una decisión de diseño deliberada: un orquestador intermediario duplicaría al agente principal de la sesión, añadiría un salto con pérdida de contexto y crearía dos capas compitiendo por la misma responsabilidad.
+
+---
+
+## Plataformas soportadas: Claude Code y OpenCode
+
+Cada proyecto generado tiene **una sola plataforma de agentes**, elegida por el usuario durante la entrevista (nunca asumida). La elección determina dónde y con qué formato estricto `agent-writer` escribe los agentes:
+
+| | Claude Code | OpenCode |
+|---|---|---|
+| Ubicación | `.claude/agents/<nombre>.md` | `.opencode/agents/<nombre>.md` |
+| Nombre del agente | campo `name:` (kebab-case, único) | nombre del archivo |
+| Frontmatter clave | `name`, `description`, `tools` (allowlist), `model` (alias: `haiku`/`sonnet`/`opus`) | `description`, `mode: subagent`, `permission` (allow/ask/deny), `model` (`proveedor/modelo`) |
+| Incompatibilidades | No tiene `mode`/`permission` | **No tiene `tools:`** — campos desconocidos se ignoran silenciosamente |
+| Activación | inmediata | requiere reiniciar la sesión de opencode |
+
+Las dos variantes estrictas viven en `core/agent-template.md`. **Nunca se mezclan campos entre plataformas.**
+
+En proyectos ya generados (brownfield interno), la plataforma queda determinada por la carpeta de agentes existente y no se vuelve a preguntar.
+
+---
+
 ## `intake/` — requerimientos opcionales
 
-La carpeta `genesis/intake/` está diseñada para que el usuario coloque un archivo `.md` con requerimientos funcionales o no funcionales **antes** de iniciar el flujo.
+La carpeta `genesis/intake/` es **propiedad del usuario**: aquí colocas tus archivos `.md` con requerimientos funcionales o no funcionales **antes** de iniciar el flujo.
 
-- Si existe, los agentes genéricos lo usan como fuente de verdad y acortan la entrevista a solo lo ambiguo.
+- Los agentes de genesis **solo leen** esta carpeta — nunca escriben, crean ni mueven archivos en ella.
+- Si existe contenido, los agentes genéricos lo usan como fuente de verdad y acortan la entrevista a solo lo ambiguo.
 - Si no existe, la entrevista parte de cero.
 - Aplica igual para proyectos nuevos y existentes.
 

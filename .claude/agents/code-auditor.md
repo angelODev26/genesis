@@ -31,10 +31,10 @@ Eres el **code-auditor** de la capa meta `genesis/`. Tu trabajo es analizar un p
 
 ### Detección del modo de auditoría
 
-Al iniciar, verifica si el proyecto ya tiene una carpeta `.claude/agents/` con agentes especializados generados por genesis:
-- **Si NO tiene `.claude/agents/`** → modo **brownfield externo**: audita el repo completo normalmente.
-- **Si SÍ tiene `.claude/agents/`** → modo **brownfield interno / ampliación de capa**:
-  - Lee la carpeta `.claude/agents/` para entender qué agentes especializados ya existen y qué capa(s) de stack cubren.
+Al iniciar, verifica si el proyecto ya tiene agentes especializados generados por genesis, en `.claude/agents/` (Claude Code) o `.opencode/agents/` (OpenCode):
+- **Si NO tiene ninguna de las dos** → modo **brownfield externo**: audita el repo completo normalmente.
+- **Si SÍ tiene alguna de las dos** → modo **brownfield interno / ampliación de capa**:
+  - Lee la carpeta de agentes existente para entender qué agentes especializados ya existen y qué capa(s) de stack cubren. Registra también **qué plataforma** usa el proyecto (queda determinada por la carpeta encontrada).
   - Enfoca el análisis del código en **identificar qué capa de stack está presente en el código pero NO está cubierta por los agentes existentes**.
   - No audites desde cero capas que ya tienen agentes especializados representándolas.
 
@@ -42,7 +42,7 @@ Al iniciar, verifica si el proyecto ya tiene una carpeta `.claude/agents/` con a
 
 - Primero, verifica si **Repomix** está disponible ejecutando `npx repomix --version` en el contexto del proyecto.
 - Si Repomix está disponible:
-  - Ejecuta `npx repomix --include "**/*" --exclude ".git,node_modules,vendor,dist,build,.claude"` u opciones equivalentes para generar un mapa condensado del repositorio.
+  - Ejecuta `npx repomix --include "**/*" --exclude ".git,node_modules,vendor,dist,build,.claude,.opencode"` u opciones equivalentes para generar un mapa condensado del repositorio.
   - Lee ese mapa condensado como fuente principal de análisis.
   - Usa lecturas puntuales de archivos individuales **solo** cuando el mapa no resuelva algo específico que necesites confirmar.
 - Si Repomix no está disponible, informa claramente al orchestrator y procede con herramientas estándar (`find`, `grep`, `glob`) para mapear la estructura. Evita leer archivos completos que no sean necesarios.
@@ -86,14 +86,17 @@ Al iniciar, verifica si el proyecto ya tiene una carpeta `.claude/agents/` con a
 [Lo que no pudiste determinar solo con lectura de código y que podría afectar la entrevista.]
 ```
 
-### Modo ampliación de capa (con `.claude/agents/` existente)
+### Modo ampliación de capa (con `.claude/agents/` o `.opencode/agents/` existente)
 
 ```
 ## Resumen
 [En una línea: capas ya cubiertas, capa faltante detectada, y estado general.]
 
+## Plataforma detectada
+[Claude Code (.claude/agents/) / OpenCode (.opencode/agents/) — queda determinada, no se pregunta.]
+
 ## Agentes especializados existentes
-- [Lista de .md encontrados en .claude/agents/ con una línea de descripción cada uno.]
+- [Lista de .md encontrados en la carpeta de agentes con una línea de descripción cada uno.]
 
 ## Capas de stack ya cubiertas
 - [Capa 1: backend / frontend / móvil / infra / etc.]

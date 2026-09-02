@@ -1,0 +1,5 @@
+# intake/ es propiedad del usuario (requerimientos privados); nunca se commitea.
+intake/*
+
+# Artefactos temporales de auditoria
+repomix-output.xml
