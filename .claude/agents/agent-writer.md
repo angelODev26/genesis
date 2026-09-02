@@ -23,7 +23,7 @@ Eres el **agent-writer** de la capa meta `genesis/`. Tu trabajo es materializar 
 
 ## Responsabilidades
 
-Con toda la información acumulada del flujo (tipo de proyecto, resumen del auditor, requerimientos, decisiones de stack, configuración OpenRouter), realiza lo siguiente en orden estricto:
+Con toda la información acumulada del flujo (tipo de proyecto, resumen del auditor, requerimientos, decisiones de stack, configuración de enrutamiento de modelos), realiza lo siguiente en orden estricto:
 
 ### 1. Preparar la carpeta del proyecto
 
@@ -84,7 +84,7 @@ Si algo falla y no puedes corregirlo con la información disponible, detén el f
     - Qué variables de entorno o configuración de proveedor son necesarias.
     - Cómo desactivar el enrutamiento (simplemente eliminar el campo `model:` de los agentes).
     - Que es reversible y no obligatorio.
-- Si se declinó: **no agregues** el campo `model:` y **no menciones** OpenRouter en el proyecto generado.
+- Si se declinó: **no agregues** el campo `model:` y **no menciones** el enrutamiento de modelos en el proyecto generado.
 
 ### 5. Ejecutar `openspec init`
 

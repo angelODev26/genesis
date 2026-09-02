@@ -15,7 +15,7 @@ Una vez generados, los agentes especializados **no dependen de `genesis/`** para
 
 ## Cómo se usa
 
-Desde una sesión de Claude Code abierta en esta carpeta (o en el directorio padre que contenga a `genesis/` y a los proyectos), ejecuta:
+Desde una sesión de Claude Code u OpenCode abierta en esta carpeta (o en el directorio padre que contenga a `genesis/` y a los proyectos), ejecuta:
 
 ```
 /new-project <nombre-del-proyecto>
@@ -25,25 +25,33 @@ Esto dispara el flujo completo coordinado por los agentes de esta capa meta.
 
 ---
 
-## Flujo nuevo vs. flujo existente
+## Los tres casos del flujo
 
-### Proyecto nuevo (greenfield)
+### Caso 1: proyecto nuevo (greenfield)
 
 1. El usuario ejecuta `/new-project <nombre>`.
-2. Los agentes genéricos revisan si existe algo en `intake/` y hacen una breve entrevista de afinación.
+2. Los agentes genéricos revisan si existe algo en `intake/` y hacen una breve entrevista de afinación (incluida la **plataforma de agentes**: Claude Code u OpenCode).
 3. Sugieren stack/dominio con trade-offs explícitos; el usuario confirma o ajusta.
 4. Se genera la carpeta hermana `<nombre>/` con los agentes especializados ya instalados.
 5. **Fin del trabajo de la capa meta.**
-6. El usuario abre una **nueva sesión de Claude Code directamente en la carpeta del proyecto generado**. Desde ahí, los agentes especializados manejan su propio ciclo de planeación y ejecución.
+6. El usuario abre una **nueva sesión directamente en la carpeta del proyecto generado** (si la plataforma es OpenCode, esa sesión debe arrancarse tras la generación para que cargue los agentes). Desde ahí, los agentes especializados manejan su propio ciclo de planeación y ejecución.
 
-### Proyecto existente (brownfield)
+### Caso 2: proyecto existente ajeno a genesis (brownfield externo)
 
-1. El usuario ejecuta `/new-project <nombre>` apuntando a una carpeta existente.
+1. El usuario ejecuta `/new-project <nombre>` apuntando a una carpeta existente sin agentes de genesis.
 2. `code-auditor` analiza el código actual primero (usando Repomix si está disponible) para entender stack, convenciones y arquitectura.
-3. La entrevista cubre solo lo que el código no revela.
+3. La entrevista cubre solo lo que el código no revela (incluida la plataforma de agentes).
 4. Los agentes especializados se instalan **dentro** del proyecto existente.
 5. Como primer paso pendiente, los agentes especializados deben generar un **baseline spec** documentando el comportamiento actual antes de cualquier cambio nuevo.
 6. Todo cambio posterior se propone como delta contra ese baseline.
+
+### Caso 3: proyecto ya generado por genesis, agregando capa (brownfield interno)
+
+1. El usuario quiere añadir una capa de stack que el proyecto no tenía (por ejemplo, un frontend para un backend existente) y ejecuta `/new-project` con el nombre del mismo proyecto.
+2. `code-auditor` detecta los agentes especializados existentes (en `.claude/agents/` o `.opencode/agents/`); la **plataforma queda determinada** por esa carpeta y no se vuelve a preguntar. El análisis de código se enfoca en lo que no está cubierto.
+3. La entrevista cubre únicamente la capa faltante.
+4. `agent-writer` agrega **solo** los agentes de la nueva capa — sin modificar, duplicar ni sobrescribir los existentes, y verificando colisiones de nombre.
+5. Se actualiza el README del proyecto reflejando la capa agregada. **Fin del trabajo de la capa meta.**
 
 ---
 
@@ -92,20 +100,25 @@ La carpeta `genesis/intake/` es **propiedad del usuario**: aquí colocas tus arc
 
 ```
 genesis/
+├── AGENTS.md                # contexto auto-cargado (OpenCode lee este archivo al arrancar)
 ├── .claude/
-│   ├── agents/              # agentes genéricos de la capa meta
+│   ├── agents/              # agentes genéricos de la capa meta (formato Claude Code)
 │   │   ├── orchestrator.md
 │   │   ├── code-auditor.md
 │   │   ├── requirements-interviewer.md
 │   │   ├── stack-advisor.md
 │   │   └── agent-writer.md
 │   └── commands/
-│       └── new-project.md   # /new-project
+│       └── new-project.md   # /new-project (Claude Code)
+├── .opencode/
+│   ├── agents/              # los mismos agentes meta (formato OpenCode)
+│   └── commands/
+│       └── new-project.md   # /new-project (OpenCode)
 ├── core/
 │   ├── principles.md        # buenas prácticas universales
-│   └── agent-template.md    # plantilla base para agentes especializados
-├── intake/
-│   └── .gitkeep             # coloca aquí tu .md de requerimientos
+│   └── agent-template.md    # plantilla base (dos variantes: Claude Code / OpenCode)
+├── intake/                  # SOLO LECTURA — propiedad del usuario (ignorado por git)
+├── decisions/               # ADRs de la capa meta
 └── README.md                # este archivo
 ```
 
@@ -116,7 +129,7 @@ genesis/
 Una vez el proyecto especializado está generado:
 
 1. **Cierra o abandona la sesión actual de `genesis/`**.
-2. **Abre una nueva sesión de Claude Code en la carpeta del proyecto generado** (`../<nombre-proyecto>/`).
+2. **Abre una nueva sesión (Claude Code u OpenCode, según la plataforma elegida) en la carpeta del proyecto generado** (`../<nombre-proyecto>/`).
 3. Invoca los comandos de ese proyecto (por ejemplo, su propio ciclo OpenSpec) para empezar a trabajar.
 
 Los agentes especializados ya saben tu stack, tu dominio y tus convenciones. La capa meta no vuelve a entrar en juego salvo que decidas regenerar completamente el equipo de agentes desde cero.

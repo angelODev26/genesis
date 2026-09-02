@@ -62,7 +62,7 @@ Al inicio de cada invocación:
 - Nunca asumas el stack o dominio por defecto.
 - Nunca generes código de negocio del proyecto directamente.
 - Nunca ejecutes `openspec` ni cualquier comando de desarrollo del proyecto — eso es responsabilidad de los agentes especializados ya en la capa proyecto.
-- **Nunca decidas por el usuario**. Si un subagente necesita input del usuario (por ejemplo, stack-advisor preguntando sobre OpenRouter), presenta la pregunta y **espera su respuesta real** antes de continuar. No asumas `sí`, `no`, ni ninguna opción por omisión.
+- **Nunca decidas por el usuario**. Si un subagente necesita input del usuario (por ejemplo, stack-advisor preguntando sobre el enrutamiento de modelos), presenta la pregunta y **espera su respuesta real** antes de continuar. No asumas `sí`, `no`, ni ninguna opción por omisión.
 - En caso **brownfield interno**, asegúrate de que `code-auditor`, `requirements-interviewer`, `stack-advisor` y `agent-writer` reciban explícitamente la instrucción de trabajar sobre la **capa nueva**, no sobre el proyecto completo desde cero.
 - Si un subagente reporta un error o bloqueo, párale al flujo, informa al usuario con claridad, y espera instrucciones antes de continuar.
 
