@@ -32,7 +32,7 @@ Eres el **code-auditor** de la capa meta `genesis/`. Tu trabajo es analizar un p
 Al iniciar, verifica si el proyecto ya tiene agentes especializados generados por genesis, en `.claude/agents/` (Claude Code) o `.opencode/agents/` (OpenCode):
 - **Si NO tiene ninguna de las dos** → modo **brownfield externo**: audita el repo completo normalmente.
 - **Si SÍ tiene alguna de las dos** → modo **brownfield interno / ampliación de capa**:
-  - Lee la carpeta de agentes existente para entender qué agentes especializados ya existen y qué capa(s) de stack cubren. Registra también **qué plataforma** usa el proyecto (queda determinada por la carpeta encontrada).
+   - Lee la(s) carpeta(s) de agentes existente(s) para entender qué agentes especializados ya existen y qué capa(s) de stack cubren. Registra también **qué plataforma(s)** usa el proyecto: sólo Claude Code, sólo OpenCode, o Ambos (queda determinada por la(s) carpeta(s) encontrada(s)).
   - Enfoca el análisis del código en **identificar qué capa de stack está presente en el código pero NO está cubierta por los agentes existentes**.
   - No audites desde cero capas que ya tienen agentes especializados representándolas.
 
@@ -91,7 +91,7 @@ Al iniciar, verifica si el proyecto ya tiene agentes especializados generados po
 [En una línea: capas ya cubiertas, capa faltante detectada, y estado general.]
 
 ## Plataforma detectada
-[Claude Code (.claude/agents/) / OpenCode (.opencode/agents/) — queda determinada, no se pregunta.]
+[Sólo Claude Code (.claude/agents/) / Sólo OpenCode (.opencode/agents/) / Ambos — queda determinada, no se pregunta.]
 
 ## Agentes especializados existentes
 - [Lista de .md encontrados en la carpeta de agentes con una línea de descripción cada uno.]

@@ -30,7 +30,7 @@ Esto dispara el flujo completo coordinado por los agentes de esta capa meta.
 ### Caso 1: proyecto nuevo (greenfield)
 
 1. El usuario ejecuta `/new-project <nombre>`.
-2. Los agentes genéricos revisan si existe algo en `intake/` y hacen una breve entrevista de afinación (incluida la **plataforma de agentes**: Claude Code u OpenCode).
+2. Los agentes genéricos revisan si existe algo en `intake/` y hacen una breve entrevista de afinación (incluida la **plataforma de agentes**: Claude Code, OpenCode o Ambos).
 3. Sugieren stack/dominio con trade-offs explícitos; el usuario confirma o ajusta.
 4. Se genera la carpeta hermana `<nombre>/` con los agentes especializados ya instalados.
 5. **Fin del trabajo de la capa meta.**
@@ -48,7 +48,7 @@ Esto dispara el flujo completo coordinado por los agentes de esta capa meta.
 ### Caso 3: proyecto ya generado por genesis, agregando capa (brownfield interno)
 
 1. El usuario quiere añadir una capa de stack que el proyecto no tenía (por ejemplo, un frontend para un backend existente) y ejecuta `/new-project` con el nombre del mismo proyecto.
-2. `code-auditor` detecta los agentes especializados existentes (en `.claude/agents/` o `.opencode/agents/`); la **plataforma queda determinada** por esa carpeta y no se vuelve a preguntar. El análisis de código se enfoca en lo que no está cubierto.
+2. `code-auditor` detecta los agentes especializados existentes; la(s) plataforma(s) queda(n) determinada(s) por la(s) carpeta(s) y no se vuelve(n) a preguntar. El análisis de código se enfoca en lo que no está cubierto.
 3. La entrevista cubre únicamente la capa faltante.
 4. `agent-writer` agrega **solo** los agentes de la nueva capa — sin modificar, duplicar ni sobrescribir los existentes, y verificando colisiones de nombre.
 5. Se actualiza el README del proyecto reflejando la capa agregada. **Fin del trabajo de la capa meta.**
@@ -69,7 +69,11 @@ Esta ausencia es una decisión de diseño deliberada: un orquestador intermediar
 
 ## Plataformas soportadas: Claude Code y OpenCode
 
-Cada proyecto generado tiene **una sola plataforma de agentes**, elegida por el usuario durante la entrevista (nunca asumida). La elección determina dónde y con qué formato estricto `agent-writer` escribe los agentes:
+Cada proyecto generado tiene **una o dos plataformas de agentes**, elegidas por el usuario durante la entrevista (nunca asumidas): Claude Code, OpenCode, o **Ambos**. Si se elige Ambos, `agent-writer` genera el mismo equipo dos veces — una variante estricta por plataforma, con los mismos nombres y descripciones en ambas carpetas. Las dos carpetas no colisionan (cada herramienta solo lee la suya) y pueden cohabitar sin conflicto; el costo real es el mantenimiento doble del proyecto generado en adelante.
+
+> **Caso pendiente no implementado aún** — para evitar inyectar complejidad sin necesidad: "agregar plataforma" a un proyecto brownfield interno de una sola plataforma (por ejemplo, proyecto nacido en Claude Code al que luego se le quiere añadir `.opencode/agents/`). Si aparece, `agent-writer`/`orchestrator` lo reportan como pendiente en lugar de improvisar.
+
+La elección determina dónde y con qué formato estricto `agent-writer` escribe los agentes:
 
 | | Claude Code | OpenCode |
 |---|---|---|
@@ -81,7 +85,7 @@ Cada proyecto generado tiene **una sola plataforma de agentes**, elegida por el 
 
 Las dos variantes estrictas viven en `core/agent-template.md`. **Nunca se mezclan campos entre plataformas.**
 
-En proyectos ya generados (brownfield interno), la plataforma queda determinada por la carpeta de agentes existente y no se vuelve a preguntar.
+En proyectos ya generados (brownfield interno), la(s) plataforma(s) quedan determinadas por la(s) carpeta(s) de agentes existente(s) y no se vuelven a preguntar.
 
 ---
 

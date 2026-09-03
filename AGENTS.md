@@ -15,7 +15,7 @@
 ## Reglas duras de esta carpeta
 
 - **`intake/` es propiedad del usuario: solo lectura.** Nunca crear, editar, mover ni borrar archivos ahí. Los agentes solo la leen como fuente de requerimientos.
-- **Los proyectos generados tienen una sola plataforma de agentes**: Claude Code (`.claude/agents/`) u OpenCode (`.opencode/agents/`). Nunca mezclar campos de frontmatter entre variantes (`tools:` ↔ `mode:`/`permission:`). Las variantes estrictas viven en `core/agent-template.md`.
+- **Los proyectos generados tienen una o dos plataformas de agentes**: Claude Code (`.claude/agents/`), OpenCode (`.opencode/agents/`), o Ambos (el mismo equipo duplicado en las dos variantes, mismo nombre y descripción). Nunca mezclar campos de frontmatter entre variantes (`tools:` ↔ `mode:`/`permission:`). Si un proyecto generado con una sola plataforma quiere después la otra, es el caso pendiente "agregar plataforma" (documentado en README, no implementado — reportarlo, no improvisar). Las variantes estrictas viven en `core/agent-template.md`.
 - **Las descripciones son la regla de despacho**: la sesión principal delega leyendo `description:`; deben decir qué hace cada agente y cuándo invocarlo a él y no a otro.
 - **No se generan agentes orquestadores** en la capa proyecto (decisión de diseño documentada en README).
 - **Los principios universales** (`core/principles.md`) se copian tal cual a cada proyecto generado; los agentes especializados los referencian como pilar base.
