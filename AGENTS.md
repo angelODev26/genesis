@@ -30,7 +30,8 @@ genesis/
 ├── .opencode/agents/   # capa meta, formato OpenCode (espejo derivado)
 ├── core/
 │   ├── principles.md        # principios universales
-│   └── agent-template.md    # dos variantes estrictas (Claude Code / OpenCode)
+│   ├── agent-template.md    # dos variantes estrictas (Claude Code / OpenCode)
+│   └── interview-playbooks.md # checklist de cobertura de la entrevista por capa
 ├── tools/              # verify-project.py, sync-opencode-mirrors.py, hooks/
 ├── intake/             # SOLO LECTURA — propiedad del usuario
 └── decisions/          # ADRs de la capa meta

@@ -124,7 +124,8 @@ genesis/
 │       └── verify.md        # /verify (OpenCode)
 ├── core/
 │   ├── principles.md        # buenas prácticas universales
-│   └── agent-template.md    # plantilla base (dos variantes: Claude Code / OpenCode)
+│   ├── agent-template.md    # plantilla base (dos variantes: Claude Code / OpenCode)
+│   └── interview-playbooks.md # áreas de decisión obligatorias por capa (front/back/móvil)
 ├── tools/
 │   ├── verify-project.py        # verificación determinística de proyectos generados (solo lectura)
 │   ├── sync-opencode-mirrors.py # regenera/valida los espejos .opencode/ desde .claude/
