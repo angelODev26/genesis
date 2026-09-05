@@ -23,6 +23,8 @@ Desde una sesión de Claude Code u OpenCode abierta en esta carpeta (o en el dir
 
 Esto dispara el flujo completo coordinado por los agentes de esta capa meta.
 
+También está disponible `/verify <ruta-del-proyecto>` para auditar un proyecto ya generado (ver "Verificación y protección de la capa meta").
+
 ---
 
 ## Los tres casos del flujo
@@ -113,18 +115,32 @@ genesis/
 │   │   ├── stack-advisor.md
 │   │   └── agent-writer.md
 │   └── commands/
-│       └── new-project.md   # /new-project (Claude Code)
+│       ├── new-project.md   # /new-project (Claude Code)
+│       └── verify.md        # /verify (Claude Code)
 ├── .opencode/
-│   ├── agents/              # los mismos agentes meta (formato OpenCode)
+│   ├── agents/              # los mismos agentes meta (formato OpenCode, espejos regenerables)
 │   └── commands/
-│       └── new-project.md   # /new-project (OpenCode)
+│       ├── new-project.md   # /new-project (OpenCode)
+│       └── verify.md        # /verify (OpenCode)
 ├── core/
 │   ├── principles.md        # buenas prácticas universales
 │   └── agent-template.md    # plantilla base (dos variantes: Claude Code / OpenCode)
+├── tools/
+│   ├── verify-project.py        # verificación determinística de proyectos generados (solo lectura)
+│   ├── sync-opencode-mirrors.py # regenera/valida los espejos .opencode/ desde .claude/
+│   └── hooks/
+│       └── pre-commit       # resincroniza espejos automáticamente (copiar a .git/hooks/)
 ├── intake/                  # SOLO LECTURA — propiedad del usuario (ignorado por git)
 ├── decisions/               # ADRs de la capa meta
 └── README.md                # este archivo
 ```
+
+---
+
+## Verificación y protección de la capa meta
+
+- **`/verify <ruta-del-proyecto>`** — verificación determinística y de solo lectura sobre cualquier proyecto generado: frontmatter estricto por plataforma, unicidad de nombres, prohibición de mezcla de campos, simetría en proyectos "Ambos", presencia de `core/principles.md` y de `openspec/`. Nada de esto depende de un LLM: es `tools/verify-project.py`, y `agent-writer` lo ejecuta como paso obligatorio post-generación.
+- **Protección de espejos**: los fuentes de verdad son `.claude/agents/*.md`; los `.opencode/agents/*.md` se regeneran con `tools/sync-opencode-mirrors.py`. El hook `tools/hooks/pre-commit` (instalar copiándolo a `.git/hooks/pre-commit`) lo corre en cada commit y resincroniza automáticamente si hay drift.
 
 ---
 

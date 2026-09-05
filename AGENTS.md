@@ -4,7 +4,8 @@
 
 ## Disparador del flujo
 
-- `/new-project <nombre>` — arranca el flujo completo (detección de caso → auditoría → entrevista → stack → generación). Disponible como comando en `.claude/commands/` y `.opencode/commands/`.
+- `/new-project <nombre>` — arranca el flujo completo (detección de caso → auditoría → entrevista → stack → generación → verificación). Disponible como comando en `.claude/commands/` y `.opencode/commands/`.
+- `/verify <ruta-del-proyecto>` — verificación determinística y de solo lectura sobre un proyecto ya generado (`tools/verify-project.py`; `agent-writer` también lo corre como paso obligatorio post-generación).
 
 ## Los tres casos del flujo
 
@@ -17,6 +18,7 @@
 - **`intake/` es propiedad del usuario: solo lectura.** Nunca crear, editar, mover ni borrar archivos ahí. Los agentes solo la leen como fuente de requerimientos.
 - **Los proyectos generados tienen una o dos plataformas de agentes**: Claude Code (`.claude/agents/`), OpenCode (`.opencode/agents/`), o Ambos (el mismo equipo duplicado en las dos variantes, mismo nombre y descripción). Nunca mezclar campos de frontmatter entre variantes (`tools:` ↔ `mode:`/`permission:`). Si un proyecto generado con una sola plataforma quiere después la otra, es el caso pendiente "agregar plataforma" (documentado en README, no implementado — reportarlo, no improvisar). Las variantes estrictas viven en `core/agent-template.md`.
 - **Las descripciones son la regla de despacho**: la sesión principal delega leyendo `description:`; deben decir qué hace cada agente y cuándo invocarlo a él y no a otro.
+- **Los espejos `.opencode/agents/` son artefactos derivados**: la fuente de verdad es `.claude/agents/`. Tras editar cualquier agente meta, resincroniza con `python3 tools/sync-opencode-mirrors.py` (el hook `tools/hooks/pre-commit` lo hace solo si está instalado en `.git/hooks/`).
 - **No se generan agentes orquestadores** en la capa proyecto (decisión de diseño documentada en README).
 - **Los principios universales** (`core/principles.md`) se copian tal cual a cada proyecto generado; los agentes especializados los referencian como pilar base.
 
@@ -24,11 +26,12 @@
 
 ```
 genesis/
-├── .claude/agents/     # capa meta, formato Claude Code
-├── .opencode/agents/   # capa meta, formato OpenCode (espejo)
+├── .claude/agents/     # capa meta, formato Claude Code (fuente de verdad)
+├── .opencode/agents/   # capa meta, formato OpenCode (espejo derivado)
 ├── core/
 │   ├── principles.md        # principios universales
 │   └── agent-template.md    # dos variantes estrictas (Claude Code / OpenCode)
+├── tools/              # verify-project.py, sync-opencode-mirrors.py, hooks/
 ├── intake/             # SOLO LECTURA — propiedad del usuario
 └── decisions/          # ADRs de la capa meta
 ```

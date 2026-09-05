@@ -1,0 +1,16 @@
+#!/bin/sh
+# Hook pre-commit de genesis: protege los espejos .opencode/agents/.
+# Si hay drift respecto a .claude/agents/, resincroniza y agrega los
+# cambios al commit automáticamente. Instalación: copiar a .git/hooks/pre-commit
+
+cd "$(git rev-parse --show-toplevel)" || exit 1
+
+if ! python3 tools/sync-opencode-mirrors.py --check >/dev/null 2>&1; then
+    echo "[genesis] Espejos .opencode/agents/ desincronizados — resincronizando..."
+    python3 tools/sync-opencode-mirrors.py || {
+        echo "[genesis] ❌ Falló la resincronización de espejos. Commit abortado."
+        exit 1
+    }
+    git add .opencode/agents/
+    echo "[genesis] Espejos resincronizados y agregados al commit."
+fi

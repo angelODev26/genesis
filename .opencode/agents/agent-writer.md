@@ -71,6 +71,18 @@ Antes de continuar al paso 3, verifica **cada archivo generado** contra esta lis
 
 Si algo falla y no puedes corregirlo con la información disponible, detén el flujo y reporta el bloqueo al orchestrator.
 
+### 2c. Verificación determinística post-generación
+
+Después de pasar 2b, ejecuta desde la raíz de `genesis/`:
+
+```
+python3 tools/verify-project.py <ruta-del-proyecto>
+```
+
+- Si reporta **errores** (exit 1), corrígelos y vuelve a correr hasta obtener exit 0.
+- Si solo reporta **advertencias**, documéntalas en tu salida (no bloquean).
+- Este paso no sustituye tu criterio: es el piso mínimo de garantías estructurales, y es la misma verificación que el usuario puede correr en cualquier momento con `/verify <ruta>`.
+
 ### 3. Copiar `core/principles.md`
 
 - Copia `genesis/core/principles.md` tal cual al proyecto generado, en `core/principles.md`.
@@ -136,6 +148,7 @@ Al terminar (o si encuentras un bloqueo):
 - Validación de agentes (paso 2b): [OK / fallos corregidos / bloqueado]
 - Enrutamiento de modelos configurado: [Sí / No]
 - openspec init: [OK / Falló — motivo]
+- Verificación determinística: [OK / incidencias — cuáles]
 
 ## Pendientes
 [Si algo quedó por hacer fuera de tu alcance.]
