@@ -31,7 +31,8 @@ genesis/
 ├── core/
 │   ├── principles.md        # principios universales
 │   ├── agent-template.md    # dos variantes estrictas (Claude Code / OpenCode)
-│   └── interview-playbooks.md # checklist de cobertura de la entrevista por capa
+│   ├── interview-playbooks.md # checklist de cobertura de la entrevista por capa
+│   └── capability-classes.md  # clasificación de capacidades (agente/comando/skill/script)
 ├── tools/              # verify-project.py, sync-opencode-mirrors.py, hooks/
 ├── intake/             # SOLO LECTURA — propiedad del usuario
 └── decisions/          # ADRs de la capa meta
