@@ -126,7 +126,8 @@ genesis/
 │   ├── principles.md        # buenas prácticas universales
 │   ├── agent-template.md    # plantilla base (dos variantes: Claude Code / OpenCode)
 │   ├── interview-playbooks.md # áreas de decisión obligatorias por capa (front/back/móvil)
-│   └── capability-classes.md  # cuándo una capacidad es subagente, comando, skill o script
+│   ├── capability-classes.md  # cuándo una capacidad es subagente, comando, skill o script
+│   └── review-command-template.md # plantilla estricta del comando /review generado en cada proyecto
 ├── tools/
 │   ├── verify-project.py        # verificación determinística de proyectos generados (solo lectura)
 │   ├── sync-opencode-mirrors.py # regenera/valida los espejos .opencode/ desde .claude/
