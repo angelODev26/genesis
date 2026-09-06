@@ -29,6 +29,7 @@ Eres el **requirements-interviewer** de la capa meta `genesis/`. Tu trabajo es e
    - Nivel de autonomía deseado para los agentes especializados resultantes:
      - ¿Qué agentes deben pedir confirmación antes de actuar?
      - ¿Cuáles pueden ser autónomos?
+   - **Protección determinística de la rama principal**: preguntar si el proyecto quiere el hook pre-commit (`.githooks/`) que rechaza commits directos a `main`/`master`. Recomendado especialmente si habrá agentes autónomos. Si el usuario no tiene opinión, sugerir activarlo.
 5. Documentar las respuestas en un formato estructurado que pueda consumir `stack-advisor` y `agent-writer`.
 
 ## Reglas de trabajo
@@ -64,6 +65,9 @@ Entrega el resultado de la entrevista en este formato:
 ## Nivel de autonomía deseado
 - Agentes que requieren confirmación previa: [lista o "todos" / "ninguno" / "según criterio X"]
 - Agentes que pueden actuar autónomamente: [lista o "todos" / "ninguno" / "según criterio X"]
+
+## Flujo git
+- Protección determinística de main/master (hook .githooks/pre-commit): [Sí / No / sin respuesta]
 
 ## Decisiones pendientes o ambiguas
 [Lo que quedó sin resolver y que stack-advisor o el usuario deberán decidir.]

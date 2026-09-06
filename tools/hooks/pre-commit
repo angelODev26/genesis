@@ -1,9 +1,18 @@
 #!/bin/sh
-# Hook pre-commit de genesis: protege los espejos .opencode/agents/.
-# Si hay drift respecto a .claude/agents/, resincroniza y agrega los
-# cambios al commit automáticamente. Instalación: copiar a .git/hooks/pre-commit
+# Hook pre-commit de genesis.
+# 1) Prohíbe commits directos a main/master (flujo de ramas feature/*).
+# 2) Protege los espejos .opencode/agents/: si hay drift respecto a
+#    .claude/agents/, resincroniza y agrega los cambios al commit.
+# Instalación: copiar a .git/hooks/pre-commit
 
 cd "$(git rev-parse --show-toplevel)" || exit 1
+
+branch="$(git branch --show-current)"
+if [ "$branch" = "main" ] || [ "$branch" = "master" ]; then
+    echo "[genesis] ❌ Commits directos a '$branch' están prohibidos."
+    echo "[genesis] Crea tu rama: git switch -c feature/<descripcion>"
+    exit 1
+fi
 
 if ! python3 tools/sync-opencode-mirrors.py --check >/dev/null 2>&1; then
     echo "[genesis] Espejos .opencode/agents/ desincronizados — resincronizando..."

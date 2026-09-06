@@ -47,6 +47,7 @@ Eres el agente especializado `[INJECT: Nombre del agente]` para el proyecto `[IN
 ## Reglas de trabajo
 
 - Aplica siempre `core/principles.md` como pilar base, además de las reglas específicas de este agente.
+- **Antes de modificar código**: verifica la rama actual (`git branch --show-current`). Si estás en `main`/`master`, crea la rama del cambio siguiendo la sección de flujo git de `core/principles.md`. Nunca modifiques código sobre la rama principal.
 - [INJECT: reglas específicas de stack o dominio]
 
 ## Formato de salida obligatorio
@@ -121,6 +122,7 @@ Eres el agente especializado `[INJECT: Nombre del agente]` para el proyecto `[IN
 ## Reglas de trabajo
 
 - Aplica siempre `core/principles.md` como pilar base, además de las reglas específicas de este agente.
+- **Antes de modificar código**: verifica la rama actual (`git branch --show-current`). Si estás en `main`/`master`, crea la rama del cambio siguiendo la sección de flujo git de `core/principles.md`. Nunca modifiques código sobre la rama principal.
 - [INJECT: reglas específicas de stack o dominio]
 
 ## Formato de salida obligatorio

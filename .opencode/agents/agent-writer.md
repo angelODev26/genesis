@@ -99,6 +99,15 @@ python3 tools/verify-project.py <ruta-del-proyecto>
     - Que es reversible y no obligatorio.
 - Si se declinó: **no agregues** el campo `model:` y **no menciones** el enrutamiento de modelos en el proyecto generado.
 
+### 4b. Protección de la rama principal (si la entrevista lo aprobó)
+
+Si el perfil de requerimientos dice que sí a la protección determinística de `main`/`master`:
+
+- Crea `.githooks/pre-commit` en el proyecto con un guard que rechace commits directos a `main`/`master`, con mensaje claro indicando crear la rama (`git switch -c feature/<descripcion>`). Debe ser executable.
+- Ejecuta `git config core.hooksPath .githooks` dentro del proyecto para activarlo (así el hook viaja versionado con el repo y no depende de instalar nada a mano).
+- Documéntalo en el README del proyecto (sección de setup), incluyendo el escape: `git commit --no-verify` solo para los casos excepcionales justificados.
+- Si la entrevista respondió que no, omite este paso sin más.
+
 ### 5. Ejecutar `openspec init`
 
 - Ejecuta `openspec init` dentro del proyecto generado.

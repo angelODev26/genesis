@@ -36,6 +36,17 @@ Los siguientes principios aplican a todo proyecto generado por este sistema, sin
 - Documentar decisiones técnicas no triviales: si se descarta una alternativa obvia, dejar constancia del porqué en comentarios o documentación.
 - Mantener consistencia con las convenciones del proyecto en uso (naming, formateo, estructura de carpetas).
 
+## 6. Flujo de trabajo con git
+
+- **Nunca trabajes directamente sobre `main`/`master`.** Toda tarea que modifique código comienza creando su propia rama.
+- **Primer paso operativo** antes de tocar cualquier archivo: verifica la rama actual (`git branch --show-current`). Si es la rama principal, crea la rama del cambio antes de continuar.
+- **Convención de nombres**:
+  - Trabajo originado en una propuesta OpenSpec → `feature/<nombre-del-cambio-openspec>`.
+  - Otro trabajo nuevo → `feature/<descripcion-corta-kebab>`.
+  - Correcciones → `fix/<descripcion-corta>`; urgencias en producción → `hotfix/<descripcion-corta>`.
+- **Ramas cortas**: mergea a la rama principal en cuanto el cambio esté terminado y revisado, y borra la rama. No acumules trabajo eterno en ramas paralelas.
+- **Excepción permitida**: cambios triviales de documentación o comentarios pueden ir directo a la rama principal, pero el agente debe declararlo explícitamente en su salida ("commit directo a main: [motivo]").
+
 ---
 
 > Estos principios son universales. Cada agente especializado los aplica como base, y añade sobre ellos las reglas específicas de su lenguaje, framework y dominio de negocio.
